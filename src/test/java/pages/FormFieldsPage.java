@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
+import org.openqa.selenium.interactions.Actions;
 
 public class FormFieldsPage {
     private WebDriver driver;
@@ -21,10 +22,16 @@ public class FormFieldsPage {
         this.driver = driver;
     }
 
+    private void scroll(WebElement element) {
+        Actions actions = new Actions(driver);
+        actions.moveToElement(element).perform();
+    }
+
     //заполняем поле "name"
     public void enterName(String name) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement nameInput = wait.until(ExpectedConditions.visibilityOfElementLocated(nameField));
+        scroll(nameInput);
         nameInput.clear();
         nameInput.sendKeys(name);
     }
@@ -33,6 +40,7 @@ public class FormFieldsPage {
     public void enterPassword(String password) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement passwordInput = wait.until(ExpectedConditions.visibilityOfElementLocated(passwordField));
+        scroll(passwordInput);
         passwordInput.clear();
         passwordInput.sendKeys(password);
     }
@@ -42,7 +50,7 @@ public class FormFieldsPage {
         String xpath = String.format("//input[@name='fav_drink' and @value='%s']", drinkValue);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement checkbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
-
+        scroll(checkbox);
         // Проверка, что чекбокс выбран
         if (!checkbox.isSelected()) {
             checkbox.click();
@@ -54,7 +62,7 @@ public class FormFieldsPage {
         String xpath = String.format("//input[@name='fav_color' and @value='%s']", colorValue);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement radio = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
-
+        scroll(radio);
         // Проверка, что выбран пункт
         if (!radio.isSelected()) {
             radio.click();
@@ -65,7 +73,7 @@ public class FormFieldsPage {
     public void selectAutomationOption(String optionValue) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(automationDropdown));
-
+        scroll(dropdown);
         //Select
         org.openqa.selenium.support.ui.Select select = new org.openqa.selenium.support.ui.Select(dropdown);
         select.selectByValue(optionValue);
@@ -75,6 +83,7 @@ public class FormFieldsPage {
     public void enterEmail(String email) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement emailInput = wait.until(ExpectedConditions.visibilityOfElementLocated(emailField));
+        scroll(emailInput);
         emailInput.clear();
         emailInput.sendKeys(email);
     }
@@ -107,6 +116,7 @@ public class FormFieldsPage {
 
         WebDriverWait waitMessage = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement messageInput = waitMessage.until(ExpectedConditions.visibilityOfElementLocated(messageField));
+        scroll(messageInput);
         messageInput.clear();
         messageInput.sendKeys(message);
     }
@@ -115,7 +125,7 @@ public class FormFieldsPage {
     public void submitForm() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(this.submitButton));
-
+        scroll(submitButton);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
 
         try {
